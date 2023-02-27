@@ -38,6 +38,13 @@ function PackageItem({ trip }) {
                     <span>-</span>
                     <div className="end-date">{formatDate(trip.end_date)}</div>
                 </div>
+                <div className="profile-date-wrapper">
+                    <h4>Current capacity {trip.capacity}</h4>
+                   
+                </div>
+                <div className="profile-date-wrapper">
+                    <h4>{trip.tour_length} days tour package </h4>                   
+                </div>
         
                 {/* <button className="delete-trip-button" onClick={handleDelete}>Delete</button> */}
             </div>

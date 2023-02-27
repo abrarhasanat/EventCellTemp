@@ -14,13 +14,12 @@ import {
 import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AuthContext } from "../../shared/context/auth-context";
-import { url, port } from "../../Constant";
+import { url, port ,userTrips} from "../../Constant";
 import SuccesModal from "../../shared/components/UIElements/SuccessModal";
-import trip_list from "../../Constant"
 const CreatePackage = ({ close, modalFunctions }) => {
     const history = useHistory();
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [item, setItem] = useState(trip_list);
+    const [item, setItem] = useState(userTrips);
     const auth = useContext(AuthContext);
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const [formState, inputHandler, setFormData] = useForm(
@@ -28,6 +27,14 @@ const CreatePackage = ({ close, modalFunctions }) => {
             tour_name: {
                 value: "",
                 isValid: false,
+            },
+            tour_length: {
+                value: "",
+                isValid: false,
+            },
+            capacity: { 
+                value: "", 
+                isValid: true,
             },
             start_date: {
                 value: "",
@@ -49,16 +56,19 @@ const CreatePackage = ({ close, modalFunctions }) => {
         event.preventDefault();
         try {
             console.log(formState.inputs.tour_name.value);
-            let tourInfo = JSON.stringify({
+            let tourInfo = {
                 tour_name: formState.inputs.tour_name.value,
+                tour_length: formState.inputs.tour_length.value,
+                capacity: formState.inputs.capacity.value, 
                 start_date: formState.inputs.start_date.value,
                 end_date: formState.inputs.end_date.value,
                 overview: formState.inputs.overview.value,
-            });
+            };
+            console.log("new tour package created");
+            tourInfo.id = userTrips.length.toString(); 
             console.log(tourInfo);
-           
-            trip_list.push(tourInfo); 
-            console.log(trip_list);
+            userTrips.push(tourInfo); 
+            console.log(userTrips);
 
             // const responseData = await sendRequest(
             //     `http://${url}:${port}/api/vendor/create_package`,
@@ -81,7 +91,7 @@ const CreatePackage = ({ close, modalFunctions }) => {
     const clear_error = async (event) => {
         event.preventDefault();
         setIsSubmitted(false);
-        history.push("/edit_trips");
+        history.push("/packages");
     };
   
 
@@ -105,11 +115,27 @@ const CreatePackage = ({ close, modalFunctions }) => {
                         errorText="Please enter a valid Tour Name."
                         onInput={inputHandler}
                     />
-               
+                    <Input
+                        element="input"
+                        id="tour_length"
+                        type="text"
+                        label="Tour Length"
+                        validators={[VALIDATOR_MINLENGTH(1)]}
+                        errorText="Please enter a valid Tour Name."
+                        onInput={inputHandler}
+                    />
 
+                    <Input
+                        element="input"
+                        id="capacity"
+                        type="text"
+                        label="Capacity"
+                        validators={[VALIDATOR_MINLENGTH(1)]}
+                        errorText="Please enter a valid Tour Name."
+                        onInput={inputHandler}
+                    />
 
-
-                
+                    
                         <Input
                             element="input"
                             id="start_date"

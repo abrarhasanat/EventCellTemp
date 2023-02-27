@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import './PlaceIndexItem.scss';
 
-function PlaceIndexItem({ place, index, dateRange }) {
+function PlaceIndexItem({ place,tripId, day, index, dateRange }) {
 
     const [selectedDate, setSelectedDate] = useState('');
 

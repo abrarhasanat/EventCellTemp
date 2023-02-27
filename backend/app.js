@@ -14,9 +14,9 @@ app.use(cors());
 app.use("*", cors());
 //app.use("/api/places", placesRoutes); // => /api/places...
 //app.use("/api/users", usersRoutes);
-app.use("/api/person", personRoutes);
-app.use("/api/center", centerRoutes);
-
+//app.use("/api/person", personRoutes);
+//app.use("/api/center", centerRoutes);
+app.use("/api/vendor", usersRoutes);
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
   throw error;

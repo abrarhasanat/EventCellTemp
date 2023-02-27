@@ -1,15 +1,21 @@
 .trip-item {
     width: 200px;
     height: 100px;
-    border: 1px solid #DDDDDD;
+    border: 5px solid #03071d;
     border-radius: 10px;
     width: 561px;
-    height: 155px;
+    max-width: 561px;
+    height: 270px;
     box-sizing: border-box;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+    background-image: url("../../assets/mountain.png");
+
 }
 
 .trip-info-wrapper {
+    max-width: 561px;
     margin-left: 30px;
     margin-top: 24px;
 }

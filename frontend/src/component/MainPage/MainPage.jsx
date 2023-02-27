@@ -1,10 +1,12 @@
 import './MainPage.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useContext } from 'react';
 import { useSelector } from 'react-redux';
-
-
+import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../../shared/context/auth-context';
+import Auth from '../../user/pages/Auth';
 const MainPage = () => {
-  
+  const auth = useContext(AuthContext);
+  const history = useHistory();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
@@ -29,9 +31,11 @@ const MainPage = () => {
     setShowSignupModal: (shown) => setShowSignupModal(shown)
   }
   
-  const handleCreateTrip = {
-    
-  }
+  const handleCreateTrip = () => {
+    if (auth.isLoggedIn)
+      history.push(`/createPackage`);
+    else history.push(`/auth`);
+    }
 
   return (
     <>

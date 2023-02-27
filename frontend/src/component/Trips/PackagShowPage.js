@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import PlaceIndex from "../Places/PlaceIndex";
+import { PlaceIndex } from "../Places/PlaceIndex";
 import "./PackageShowPage.scss";
-const trip = {
+import { userTrips } from "../../Constant";
+let trip = {
     "id": "1",
     "tour_name": "Cox's_Bazaar",
     "start_date": "2023-04-04",
@@ -12,11 +13,24 @@ const trip = {
 
 };
 
-const PackageShowPage = () => {
-   
-    console.log("here : PackageShowPage");
+const PackageShowPage = (id) => {
+    const packageId = useParams();
+    console.log(packageId);
+    console.log(packageId.packageId);
+    console.log("mile?");
+    userTrips.map((trip_) => {
+        console.log(trip_.id,packageId.packageId);
+        if (trip_.id === packageId.packageId ){
+            trip = trip_;
+            console.log("peye gesi mama");
+        }
+        
+    }
+    
 
-    const { packageId } = useParams();
+    );
+    console.log(trip);
+    console.log("here : PackageShowPage");
     const [showEditModal, setShowEditModal] = useState(false);
     const [updateTrip, setUpdateTrip] = useState(false);
 
@@ -58,6 +72,9 @@ const PackageShowPage = () => {
                             <img src={require("../../assets/edit.png")} />
                         </button>
                     </div>
+                    <div className="top-row-info">
+                        <h4>total capacity {trip.capacity}</h4>
+                    </div>
                     <div className="date-container">
                         <div className="start-date date-field">
                             {formatDate(trip.start_date)}
@@ -71,9 +88,7 @@ const PackageShowPage = () => {
 
                     <PlaceIndex trip={trip} />
                 </div>
-                {/* <div className="right-map">
-                    <Places trip={trip} />
-                </div> */}
+
             </div>
 
         </>

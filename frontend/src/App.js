@@ -47,7 +47,7 @@ const App = () => {
   }, []);
 
   const changeRule = useCallback(() => {
-    setIsPerson(!isPerson);
+    setIsPerson(true);
   });
   let routes;
 
@@ -58,13 +58,21 @@ const App = () => {
           <Route path="/package/:packageId">
             <PackageShowPage></PackageShowPage>
           </Route>
-          <Route path="/" exact>
-            <Profile />
+          <Route path="/packages" exact>
+            <Profile/>
           </Route>
-          <Route path="/:person_id/update" exact>
-            <UpdatePersonInfo />
+          <Route path="/createPackage">
+            <CreatePackage/>
           </Route>
-          <Redirect to="/" />
+          
+          <Route path  = "/auth">
+            <MainPage/>
+          </Route>
+
+          <Route path="/" >
+            <MainPage/>
+          </Route>
+          
         </Switch>
       );
     } else {
@@ -102,6 +110,7 @@ const App = () => {
         <Route path="/">
           <MainPage />
         </Route>
+        <Redirect to = "/"></Redirect>
       </Switch>
     );
   }

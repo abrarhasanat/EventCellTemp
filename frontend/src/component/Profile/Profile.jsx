@@ -1,5 +1,6 @@
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; 
+import { useHistory } from "react-router-dom";
 import './Profile.scss';
 
 import moment from "moment";
@@ -19,25 +20,10 @@ import { AuthContext } from "../../shared/context/auth-context";
 import { url, port } from "../../Constant";
 import Users from "../../user/pages/Users"; 
 import PackageItem from "../Trips/PackageItem";
+import { userTrips } from "../../Constant";
 const now = new moment();
-const userTrips = [
 
-    {
-        "id" : "1",
-        "tour_name": "Cox's_Bazaar",
-        "start_date": "2023-04-04",
-        "end_date": "2023-05-05",
-        "overview": "this a demo Cox'sBazar Tour"
-    },
 
-    {
-        "id" : "2",
-        "tour_name": "Bandarban",
-        "start_date": "2023-04-04",
-        "end_date": "2023-05-05",
-        "overview": "This is a demo Bandarban Tour"
-    },
-]
 
 const myVendor = {
     "id": "v1",
@@ -49,8 +35,9 @@ const myVendor = {
 
 
 function Profile() {
-    console.log(" i am in profile")
-  
+    const history = useHistory();
+    console.log(" i am in profile");
+    console.log(userTrips);
     const current = new Date();
     const date = `${current.getMonth() + 1
         }/${current.getDate()}/${current.getFullYear()}`;
@@ -71,7 +58,9 @@ function Profile() {
     //     </>
     //      )
     // } else {
-    
+    const handleClik = () => { 
+        history.push(`/createPackage`);
+    }
     return (
         <>
             <div className="trips-page-container">
@@ -95,7 +84,7 @@ function Profile() {
                                 </>
                             ))}
                     {userTrips && userTrips.length === 0 && <h1>You have no upcoming trips, start planning?</h1>}
-                    <button onClick={() => setCreateMode(true)} className="create-trip-button">
+                    <button onClick={handleClik} className="create-trip-button">
                         <img className="map-icon" src={require('../../assets/mapicon.png')}></img>
                         <span className="create-trip-text">Create New Trip</span>
                     </button>
@@ -109,6 +98,7 @@ function Profile() {
                             .map((filteredTrips) => (
                                  <PackageItem key={filteredTrips.id} trip={filteredTrips} />
                             ))}
+                     
                 </div>
                
             </div>

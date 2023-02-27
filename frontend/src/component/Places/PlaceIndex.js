@@ -1,34 +1,15 @@
 import { useSelector } from "react-redux";
 import PlaceIndexItem from "./PlaceIndexItem";
 import './PlaceIndex.scss';
-
-const locations = [
-    {
-        "id": "1",
-        "name": "inani_beach",
-        "url": "https://picsum.photos/200",
-        "date": "2023-04-05",
-        "rating": "5"
-    },
-
-    {
-        "id": "1",
-        "name": "himchori_beach",
-        "url": "https://picsum.photos/200",
-        "date": "2023-04-06"
-
-    },
-    {
-        "id": "1",
-        "name": "kolatoli beachj",
-        "url": "https://picsum.photos/200",
-        "date": "2023-04-07"
-    }
-]
+import { locations } from "../../Constant";
+import Button from "../../shared/components/FormElements/Button";
+import { useState } from "react";
+import { useEffect } from "react";
 const PlaceIndex = (trips) => {
     console.log("here  : Place Index")
-    console.log(trips.trip);
-
+    console.log(trips.trip.id);
+    const [showAddLocation, setShowAddLocation] = useState(false);
+    const [places, setPlaces] = useState([]);
     const formatDate = (dateString) => {
         let setDate = new Date(dateString);
         const options = {
@@ -46,38 +27,131 @@ const PlaceIndex = (trips) => {
         let currentDate = new Date(startDate);
         // debugger
         let endDate = new Date(end);
-        console.log(currentDate); 
+        console.log(currentDate);
         while (currentDate <= endDate) {
             dateRangeArray.push(formatDate(new Date(currentDate)));
             currentDate.setDate(currentDate.getDate() + 1);
         }
         console.log(endDate);
-        console.log(dateRangeArray.length); 
-        
+        console.log(dateRangeArray.length);
+
         return dateRangeArray;
+    }
+
+    const createDays = (totalDays) => {
+        console.log("I am creating some days");
+        let days = [];
+        let curr = 1;
+        while (curr <= parseInt(totalDays)) {
+            days.push(curr.toString());
+            curr = curr + 1;
+            console.log(curr);
+        }
+        console.log(days);
+        return days;
+    }
+    const addNewLocation = () => {
+
+    }
+
+
+    let placeList = [];
+
+    useEffect(() => {
+        const fetchPlace = async () => {
+            let days = createDays(trips.trip.tour_length);
+            console.log("days loaded");
+            days.map((day) => {
+
+                let placesUnderThisDay = [];
+                locations.map((place) => {
+                    if (place.day === day) {
+                        placesUnderThisDay.push(place);
+                    }
+                });
+                placeList.push({ day_no: day, places: placesUnderThisDay });
+
+            });
+            console.log(placeList);
+            setPlaces(placeList);
+            console.log("place List loaded");
+            console.log(places);
+
+        };
+        fetchPlace();
+    }, [locations]);
+
+    const DescriveTour = () => {
+        places.map((tuple) => {
+            console.log("keno");
+            console.log(tuple);
+            return (
+                <>
+                    {console.log("hi hi hi i am unre")}
+                    <div>
+                    {tuple.places && tuple.places.map((pa, index) => {
+                        console.log(pa.name);
+                        return (
+                            <>
+                                <h1>{pa.name}</h1>
+                            </>
+                        )
+                    })}
+                    </div>
+                    <div key={tuple.day_no}>
+                        <br></br>
+                        <h1>Bangladesh Bangladesh</h1>
+                        <Button className="section-header"> Trip Day {tuple.day_no === "none" ? "Places to Go" : tuple.day_no}</Button>
+
+                        <Button onclick={handleAddNew} >Add New Place </Button>
+                        <div className="place-index-container">
+                            {places &&
+                                tuple.places.map((place, index) => {
+
+                                    return (
+                                        <>
+                                            <PlaceIndexItem key={place.id} tripId={trips.trip.id} day={place.day} place={place} index={index} dateRange={createDateRange(trips.trip.startDate, trips.trip.endDate)} />
+                                        </>
+                                    )
+
+                                }
+
+                                )}
+                        </div>
+                    </div>
+                </>
+            )
+        });
+    }
+
+    const handleAddNew = () => {
+
     }
 
     const daySection = (dateRangeArray) => dateRangeArray.map((day) => {
         console.log("I am here under placeIndex");
         // let filterDay = dateRangeArray.includes(day) ? day : "Places to Go"; 
-        console.log(locations.length);
+
         return (
             <div key={day}>
-                <h1 className="section-header">{day === "none" ? "Places to Go" : day}</h1>
+                <br></br>
+                <Button className="section-header"> Trip Day {day === "none" ? "Places to Go" : day}</Button>
                 <h1 className="section-header">{day === "none" && locations.length === 0 ? "No places added yet. Add your next destination using the map on the right!" : ""}</h1>
+
+                <Button onclick={handleAddNew} >Add New Place </Button>
                 <div className="place-index-container">
                     {locations &&
-                        locations.map((place, index) => { 
+                        locations.map((place, index) => {
                             console.log("abrar ", place, index);
                             console.log(formatDate(place.date));
                             console.log(day);
                             if (!place.date) {
                                 place.date = "none";
                             }
-                            if (formatDate(place.date) === day) {
+                            if (place.day === day) {
                                 return (
                                     <>
-                                        <PlaceIndexItem key={place.id} place={place} index={index} dateRange={createDateRange(trips.trip.startDate, trips.trip.endDate)} />
+                                        <PlaceIndexItem key={place.id} tripId={trips.trip.id} day={place.day} place={place} index={index} dateRange={createDateRange(trips.trip.startDate, trips.trip.endDate)} />
                                     </>
                                 )
                             }
@@ -90,11 +164,49 @@ const PlaceIndex = (trips) => {
     })
 
     return (
-        <div>
-            <div className="top-border"></div>
-            {daySection(createDateRange(trips.trip.start_date, trips.trip.end_date))}
-        </div>
+        <>
+
+
+
+             <div>
+                <div className="top-border"></div>
+                {daySection(createDays(trips.trip.tour_length))}
+            </div> 
+            <div>
+                {DescriveTour()};
+            </div>
+
+        </>
     );
 }
 
-export default PlaceIndex;
+export { PlaceIndex, locations };
+
+
+
+
+// {
+//     divisions && (
+//         <select
+//             className="form-control"
+//             onChange={getDistricts}
+//             value={division}
+//         >
+//             <option key={"u1"} value={"Division"}>
+//                 Division
+//             </option>
+//             <label> Division </label>
+//             {divisions.map((c) => {
+//                 return (
+//                     <option
+//                         key={c.DIVISION}
+//                         value={c.DIVISION}
+//                     //onClick={setDivision(c.DIVISION) && getDistricts}
+//                     >
+//                         {c.DIVISION}
+//                     </option>
+//                 );
+//             })}
+//         </select>
+//     )
+// }
