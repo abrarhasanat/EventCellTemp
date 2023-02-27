@@ -34,7 +34,13 @@ const NavLinks = (props) => {
           <NavLink to={`/${auth.uid}/update`}>Update Info</NavLink>
         </li>
       )}
-
+      
+      {auth.isPerson && auth.isLoggedIn && (
+        <li>
+          <NavLink to={`/${auth.uid}/packages`}>Packages</NavLink>
+        </li>
+      )}
+     
       {auth.isLoggedIn && (
         <li>
           <button onClick={auth.logout}>LOGOUT</button>
@@ -48,10 +54,17 @@ const NavLinks = (props) => {
       )} */
         !auth.isLoggedIn && (
           <li>
-            <NavLink to="/manage">VMS</NavLink>
+            <NavLink to="/auth">Login</NavLink>
           </li>
         )
       }
+
+
+
+      
+
+     
+
     </ul>
   );
 };

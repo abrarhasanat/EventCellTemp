@@ -23,10 +23,16 @@ import Vaccinate from "./Center/pages/Vaccinate";
 import DropDownList from "./shared/dropdown/DropDownList";
 import UpdatePersonInfo from "./person/pages/UpdatePersonInfo";
 import UpdateStorage from "./Center/pages/UpdateStorage";
+import MainPage from "./component/MainPage/MainPage";
+import CreatePackage from "./component/CreateTripModal/CreatePackage";
+import trip_list from "./Constant";
+import Profile from "./component/Profile/Profile";
+import PackageShowPage from "./component/Trips/PackagShowPage";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isPerson, setIsPerson] = useState(false);
+  const [isPerson, setIsPerson] = useState(true);
   const [uid, setUid] = useState();
+  
 
   const login = useCallback((id) => {
     setIsLoggedIn(true);
@@ -44,51 +50,16 @@ const App = () => {
     setIsPerson(!isPerson);
   });
   let routes;
-  // if (isPerson) {
-  //   if (isLoggedIn) {
-  //     routes = (
-  //       <Switch>
-  //         <Route path="/">
-  //           <Person />
-  //         </Route>
-  //         <Redirect to="/" />
-  //       </Switch>
-  //     );
-  //   } else {
-  //     routes = (
-  //       <Switch>
-  //         <Route path="/" exact>
-  //           <PersonAuth />
-  //         </Route>
-  //       </Switch>
-  //     );
-  //   }
-  // } else {
-  //   if (isLoggedIn) {
-  //     routes = (
-  //       <Switch>
-  //         <Route path="/manage/:uid">
-  //           <Center />
-  //         </Route>
-  //       </Switch>
-  //     );
-  //   } else {
-  //     routes = (
-  //       <Switch>
-  //         <Route path="/manage">
-  //           <CenterAuth />
-  //         </Route>
-  //       </Switch>
-  //     );
-  //   }
-  // }
 
   if (isLoggedIn) {
     if (isPerson) {
       routes = (
         <Switch>
+          <Route path="/package/:packageId">
+            <PackageShowPage></PackageShowPage>
+          </Route>
           <Route path="/" exact>
-            <Person />
+            <Profile />
           </Route>
           <Route path="/:person_id/update" exact>
             <UpdatePersonInfo />
@@ -121,11 +92,15 @@ const App = () => {
         <Route path="/a/b">
           <DropDownList />
         </Route>
-        <Route path="/" exact>
+        
+        <Route path="/auth" exact>
           <PersonAuth />
         </Route>
         <Route path="/manage" exact>
-          <CenterAuth />
+          <CenterAuth />  
+        </Route>
+        <Route path="/">
+          <MainPage />
         </Route>
       </Switch>
     );

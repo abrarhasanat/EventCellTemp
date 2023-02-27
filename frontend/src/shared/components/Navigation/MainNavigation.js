@@ -37,7 +37,7 @@ const MainNavigation = props => {
           <span />
         </button>
         <h1 className="main-navigation__title">
-          <Link to="/">Vaccine4All</Link>
+          <Link to="/">EVENT-CELL</Link>
         </h1>
         <nav className="main-navigation__header-nav">
           <NavLinks />

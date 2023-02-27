@@ -43,6 +43,7 @@ const Person = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        console.log("voxod ami ekhane");
         if (auth.uid && auth.isPerson) {
           console.log("hei ami ekhane " + auth.uid);
           let responseData = await sendRequest(

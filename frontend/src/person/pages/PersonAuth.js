@@ -23,11 +23,11 @@ const PersonAuth = () => {
 
   const [formState, inputHandler, setFormData] = useForm(
     {
-      birth_certificate_no: {
+      email: {
         value: "",
         isValid: false,
       },
-      date_of_birth: {
+      password: {
         value: "",
         isValid: false,
       },
@@ -45,8 +45,8 @@ const PersonAuth = () => {
           permanent_address: undefined,
           phone_number: undefined,
         },
-        formState.inputs.birth_certificate_no.isValid &&
-          formState.inputs.date_of_birth.isValid
+        formState.inputs.email.isValid &&
+          formState.inputs.name.isValid
       );
     } else {
       setFormData(
@@ -56,11 +56,7 @@ const PersonAuth = () => {
             value: "",
             isValid: false,
           },
-          present_address: {
-            value: "",
-            isValid: false,
-          },
-          permanent_address: {
+          address: {
             value: "",
             isValid: false,
           },
@@ -80,39 +76,40 @@ const PersonAuth = () => {
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
-          `http://${url}:${port}/api/person/login`,
+          `http://${url}:${port}/api/vendor/login`,
           "POST",
           JSON.stringify({
-            birth_certificate_no: formState.inputs.birth_certificate_no.value,
-            date_of_birth: formState.inputs.date_of_birth.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
           }),
           {
             "Content-Type": "application/json",
           }
         );
-        console.log(responseData.person);
-        console.log(responseData.person.PERSON_ID);
-        auth.login(responseData.person.PERSON_ID);
+        console.log("login Successfull");
+        console.log(responseData.vendor);
+        console.log(responseData.vendor.VENDOR_ID);
+        auth.login(responseData.vendor.VENDOR_ID);
         auth.changeRule();
+        
       } catch (err) {}
     } else {
       try {
         const responseData = await sendRequest(
-          `http://${url}:${port}/api/person/signup`,
+          `http://${url}:${port}/api/vendor/signup`,
           "POST",
           JSON.stringify({
-            birth_certificate_no: formState.inputs.birth_certificate_no.value,
+            email: formState.inputs.email.value,
             name: formState.inputs.name.value,
-            present_address: formState.inputs.present_address.value,
-            permanent_address: formState.inputs.permanent_address.value,
-            date_of_birth: formState.inputs.date_of_birth.value,
+            passowrd: formState.inputs.passowrd.value,
+            address: formState.inputs.address.value,
             phone_number: formState.inputs.phone_number.value,
           }),
           {
             "Content-Type": "application/json",
           }
         );
-        console.log("abrar");
+        
         console.log(responseData);
         console.log(responseData.person.id);
         auth.login(responseData.person.id);
@@ -126,16 +123,16 @@ const PersonAuth = () => {
       <ErrorModal error={error} onClear={clearError} />
       <Card className="authentication">
         {isLoading && <LoadingSpinner asOverlay />}
-        <h2>Let's Get Vaccinated</h2>
+        <h2>Log In </h2>
         <hr />
         <form onSubmit={authSubmitHandler}>
           <Input
             element="input"
-            id="birth_certificate_no"
-            type="number"
-            label="Birth Certificate No"
-            validators={[VALIDATOR_MINLENGTH(1)]}
-            errorText="Please enter a valid Birth Certificate No."
+            id="email"
+            type="email"
+            label="Email"
+            validators={[VALIDATOR_EMAIL()]}
+            errorText="invalid email address"
             onInput={inputHandler}
           />
           {!isLoginMode && (
@@ -152,20 +149,9 @@ const PersonAuth = () => {
           {!isLoginMode && (
             <Input
               element="input"
-              id="present_address"
+              id="address"
               type="text"
-              label="Present Address"
-              validators={[VALIDATOR_MINLENGTH(5)]}
-              errorText="Please enter a  valid address."
-              onInput={inputHandler}
-            />
-          )}
-          {!isLoginMode && (
-            <Input
-              element="input"
-              id="permanent_address"
-              type="text"
-              label="Permanent Address"
+              label="Address"
               validators={[VALIDATOR_MINLENGTH(5)]}
               errorText="Please enter a  valid address."
               onInput={inputHandler}
@@ -173,11 +159,11 @@ const PersonAuth = () => {
           )}
           <Input
             element="input"
-            id="date_of_birth"
-            type="date"
-            label="Date_Of_Birth"
-            validators={[]}
-            errorText="Please enter a valid Birth Certificate No, at least 6 characters."
+            id="password"
+            type="password"
+            label="Password"
+            validators={[VALIDATOR_MINLENGTH(6)]}
+            errorText="password must be atleast 6 digits"
             onInput={inputHandler}
           />
           {!isLoginMode && (
