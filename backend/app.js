@@ -8,7 +8,7 @@ const centerRoutes = require("./routes/center-routes");
 const HttpError = require("./models/http-error");
 
 const app = express();
-
+const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(cors());
 app.use("*", cors());
@@ -30,4 +30,4 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occurred!" });
 });
 
-app.listen(5000);
+app.listen(port);
