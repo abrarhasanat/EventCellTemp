@@ -43,8 +43,8 @@ const MainPage = () => {
         <div className="main-content-container">
           <div className="main-content">
             <div className="info-container">
-              <h1>Plan anything, to anywhere, with anyone.</h1>
-              <p>Weave your wishlist destinations into a seamless itinerary all in one place. Create your journey together.</p>
+              <h1>An Online Tour Management System</h1>
+              <p>Create your journey together. All in one place</p>
               <button onClick={handleCreateTrip} className="create-trip-button">
                 <img className="map-icon" src={require('../../assets/mapicon.png')}></img>
                 <span className="create-trip-text">Create New Trip</span>
