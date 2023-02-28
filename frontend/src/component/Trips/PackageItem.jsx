@@ -6,7 +6,7 @@ function PackageItem({ trip }) {
     console.log(trip)
     console.log(trip.start_date);
     console.log(trip.end_date);
-
+    const history = useHistory();
 
     // const current = new Date();
     // const date = `${
@@ -28,6 +28,7 @@ function PackageItem({ trip }) {
         const adjustedDate = new Date(setDate.valueOf() + timeDiff);
         return adjustedDate.toLocaleDateString("default", options);
     };
+
 
     return (
         <div className="trip-item">

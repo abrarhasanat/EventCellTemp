@@ -15,19 +15,15 @@ import MainNavigation from "./shared/components/Navigation/MainNavigation";
 import { AuthContext } from "./shared/context/auth-context";
 import { PersonContext } from "./shared/context/person-context";
 import Person from "./person/pages/Person";
-import Center from "./Center/pages/Center";
 import PersonAuth from "./person/pages/PersonAuth";
-import CenterAuth from "./Center/pages/CenterAuth";
-import SetAppointment from "./Center/pages/SetAppointment";
-import Vaccinate from "./Center/pages/Vaccinate";
 import DropDownList from "./shared/dropdown/DropDownList";
 import UpdatePersonInfo from "./person/pages/UpdatePersonInfo";
-import UpdateStorage from "./Center/pages/UpdateStorage";
 import MainPage from "./component/MainPage/MainPage";
 import CreatePackage from "./component/CreateTripModal/CreatePackage";
 import trip_list from "./Constant";
 import Profile from "./component/Profile/Profile";
 import PackageShowPage from "./component/Trips/PackagShowPage";
+import AddNewPlace from "./component/Places/AddNewPlace";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPerson, setIsPerson] = useState(true);
@@ -64,7 +60,9 @@ const App = () => {
           <Route path="/createPackage">
             <CreatePackage/>
           </Route>
-          
+          <Route path = "/edit/:packageId/:day" exact>
+           <AddNewPlace></AddNewPlace>  
+          </Route>
           <Route path  = "/auth">
             <MainPage/>
           </Route>
@@ -78,19 +76,7 @@ const App = () => {
     } else {
       routes = (
         <Switch>
-          <Route path="/manage" exact>
-            <Center />
-          </Route>
-          <Route path="/manage/vaccinate">
-            <Vaccinate />
-          </Route>
-          <Route path="/manage/set_appointment" exact>
-            <SetAppointment />
-          </Route>
-          <Route path="/manage/update_storage" exact>
-            <UpdateStorage/>
-          </Route>
-          <Redirect to="/manage" />
+          <Redirect to="/" />
         </Switch>
       );
     }
@@ -105,7 +91,7 @@ const App = () => {
           <PersonAuth />
         </Route>
         <Route path="/manage" exact>
-          <CenterAuth />  
+          <MainPage></MainPage>
         </Route>
         <Route path="/">
           <MainPage />

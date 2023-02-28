@@ -5,9 +5,11 @@ import { locations } from "../../Constant";
 import Button from "../../shared/components/FormElements/Button";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useHistory, Link, NavLink } from "react-router-dom";
 const PlaceIndex = (trips) => {
     console.log("here  : Place Index")
     console.log(trips.trip.id);
+    const history = useHistory();
     const [showAddLocation, setShowAddLocation] = useState(false);
     const [places, setPlaces] = useState([]);
     const formatDate = (dateString) => {
@@ -23,6 +25,7 @@ const PlaceIndex = (trips) => {
     };
 
     const createDateRange = (startDate, end) => {
+        console.log(locations);
         let dateRangeArray = ["none"];
         let currentDate = new Date(startDate);
         // debugger
@@ -50,8 +53,8 @@ const PlaceIndex = (trips) => {
         console.log(days);
         return days;
     }
-    const addNewLocation = () => {
-
+    const addNewLocation = (day) => {
+        history.push(`/edit/${trips.trip.id}/${day}/addNewPlace`);
     }
 
 
@@ -81,51 +84,50 @@ const PlaceIndex = (trips) => {
         fetchPlace();
     }, [locations]);
 
+    const test = () => {
+        return (
+            <>
+                <h1>ki je obsta</h1>
+            </>
+        )
+    }
     const DescriveTour = () => {
+        
         places.map((tuple) => {
             console.log("keno");
             console.log(tuple);
             return (
-                <>
-                    {console.log("hi hi hi i am unre")}
-                    <div>
-                    {tuple.places && tuple.places.map((pa, index) => {
-                        console.log(pa.name);
-                        return (
-                            <>
-                                <h1>{pa.name}</h1>
-                            </>
-                        )
-                    })}
-                    </div>
-                    <div key={tuple.day_no}>
-                        <br></br>
-                        <h1>Bangladesh Bangladesh</h1>
-                        <Button className="section-header"> Trip Day {tuple.day_no === "none" ? "Places to Go" : tuple.day_no}</Button>
+                <h1>haha</h1>
+                // <div key={tuple.day_no}>
 
-                        <Button onclick={handleAddNew} >Add New Place </Button>
-                        <div className="place-index-container">
-                            {places &&
-                                tuple.places.map((place, index) => {
+                //     {/* <br></br>
+                //     <h1>Bangladesh Bangladesh</h1>
+                //     <Button className="section-header"> Trip Day {tuple.day_no === "none" ? "Places to Go" : tuple.day_no}</Button>
 
-                                    return (
-                                        <>
-                                            <PlaceIndexItem key={place.id} tripId={trips.trip.id} day={place.day} place={place} index={index} dateRange={createDateRange(trips.trip.startDate, trips.trip.endDate)} />
-                                        </>
-                                    )
+                //     <Button onclick={handleAddNew} >Add New Place </Button>
+                //     <div className="place-index-container">
+                //         {places &&
+                //             tuple.places.map((place, index) => {
+                //                 console.log("the place is");
+                //                 console.log(place);
+                //                 return (
+                //                     <> 
+                //                         {console.log("kenoooooooo")}
+                //                         <PlaceIndexItem key={place.id} tripId={trips.trip.id} day={place.day} place={place} index={index} dateRange={createDateRange(trips.trip.startDate, trips.trip.endDate)} />
+                //                     </>
+                //                 )
 
-                                }
+                //             }
 
-                                )}
-                        </div>
-                    </div>
-                </>
+                //             )}
+                //     </div> */}
+                // </div>
             )
-        });
+        })
     }
 
     const handleAddNew = () => {
-
+        
     }
 
     const daySection = (dateRangeArray) => dateRangeArray.map((day) => {
@@ -138,7 +140,7 @@ const PlaceIndex = (trips) => {
                 <Button className="section-header"> Trip Day {day === "none" ? "Places to Go" : day}</Button>
                 <h1 className="section-header">{day === "none" && locations.length === 0 ? "No places added yet. Add your next destination using the map on the right!" : ""}</h1>
 
-                <Button onclick={handleAddNew} >Add New Place </Button>
+                <NavLink to={`/edit/${trips.trip.id}/${day}`}>add a place</NavLink>
                 <div className="place-index-container">
                     {locations &&
                         locations.map((place, index) => {
@@ -159,6 +161,7 @@ const PlaceIndex = (trips) => {
 
                         )}
                 </div>
+                
             </div>
         )
     })
@@ -168,13 +171,14 @@ const PlaceIndex = (trips) => {
 
 
 
-             <div>
+            <div>
                 <div className="top-border"></div>
                 {daySection(createDays(trips.trip.tour_length))}
-            </div> 
-            <div>
-                {DescriveTour()};
-            </div>
+            </div>   
+            
+
+
+
 
         </>
     );

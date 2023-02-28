@@ -4,6 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { PlaceIndex } from "../Places/PlaceIndex";
 import "./PackageShowPage.scss";
 import { userTrips } from "../../Constant";
+
 let trip = {
     "id": "1",
     "tour_name": "Cox's_Bazaar",
@@ -14,6 +15,7 @@ let trip = {
 };
 
 const PackageShowPage = (id) => {
+    const history = useHistory();
     const packageId = useParams();
     console.log(packageId);
     console.log(packageId.packageId);
@@ -58,6 +60,8 @@ const PackageShowPage = (id) => {
         const adjustedDate = new Date(setDate.valueOf() + timeDiff);
         return adjustedDate.toLocaleDateString("default", options);
     };
+
+   
 
     return (
         <>
